@@ -112,3 +112,95 @@ git commit -a
 ```
 
 When you switch back to the master branch (`git switch master`) you will notice that your changes are no longer visible.
+
+
+## Merging branches
+
+When you work with branches, you will come to the point where you need to merge the changes made in the branch back into your `master`-branch. To do so, switch to the `master`-branch and type
+
+```
+git merge branching
+```
+
+to merge the changes made in the `branching`-branch back into your `master`. If there are no conflicts, you're done.  In our tutorial, of course, you're not done yet since there is a conflict on the `tutorial.md`.
+
+### Using a merge tool
+
+To resolve conflicts on text-based files, it is recommended to use a diff viewer. That is a tool which can show two versions of files next to each other and help you comparing the versions. A very good choice that works across all platforms is [**meld**](https://meldemerge.org)^[[https://meldemerge.org](https://meldemerge.org)].
+
+If you need help configuring your git installation to use `meld` as your merge- and diff-tool, you can [start reading here this stackoverflow answer](https://stackoverflow.com/a/34119867)^[[https://stackoverflow.com/a/34119867](https://stackoverflow.com/a/34119867)].
+
+You can use this approach to configure using meld as both your difftool as well as your mergetool. Run these commands in git bash **on Linux** (or **Mac**):
+
+```
+git config --global diff.tool meld
+git config --global difftool.meld.path "/usr/bin/meld"
+git config --global difftool.meld.cmd 'meld "$LOCAL" "$REMOTE"'
+git config --global difftool.prompt false
+
+git config --global merge.tool meld
+git config --global mergetool.meld.path "/usr/bin/meld"
+git config --global mergetool.prompt false
+git config --global mergetool.meld.cmd 'meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'
+```
+
+If you're **on Windows**, most of the commands are the same but with an important difference:
+
+```
+git config --global diff.tool meld
+git config --global difftool.meld.path "C:\Program Files (x86)\Meld\Meld.exe"
+git config --global difftool.meld.cmd 'meld "$LOCAL" "$REMOTE"'
+git config --global difftool.prompt false
+
+git config --global merge.tool meld
+git config --global mergetool.meld.path "C:\Program Files (x86)\Meld\Meld.exe"
+git config --global mergetool.prompt false
+git config --global mergetool.meld.cmd 'meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'
+```
+
+This might differ slightly, if you chose to install meld to a different location on your hard drive.
+
+It is recommended to play around with this a little bit. For example, you can also use 
+
+```
+git config --global mergetool.meld.cmd 'meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"'
+```
+
+as your mergetool command (on both Linux/Mac and Windows). This will result in a different version being shown in the center pane while merging: `$MERGED` is the partially merged version of the file. It will contain text-based indicators of where the version came from. `$BASE` is the version of the file as it was when the branch-version of the file was originally created.
+
+Just to mention: using a diff viewer is helpful for all kinds of merges, not only when you merge in the changes from a local branch.
+
+### Doing the actual merge
+
+However, when you're ready using the merge-tool of your choice type
+
+```
+git mergetool tutorial.md
+```
+
+In case you're using meld, it opens meld with three file panes. Regardless of your configuration of using `$BASE` or `$MERGED`, you have to edit the middle pane for the final output of the merged file version. Saving the middle file and closing meld finishes the merge process. Running a `git status` after a successful merge shows:
+
+```
+On branch master
+Your branch is based on 'origin/master', but the upstream is gone.
+  (use "git branch --unset-upstream" to fixup)
+
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+    modified:   tutorial.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+    tutorial.md.orig
+
+```
+
+If you now run 
+```
+git commit -a
+```
+the merge is done and a new merged revision is created. As you can see, there is also a new file `tutorial.md.orig` which contains the automatically merged version.
+
+Have a look at `gitk` to see a nice graph-based visualization of what you just did.
