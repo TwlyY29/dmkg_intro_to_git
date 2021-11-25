@@ -42,5 +42,39 @@ git commit
 
 This will prompt you for a commit message. Make sure to describe your commits in a meaningful way (relevant: https://xkcd.com/1296/ ).
 
+![Use speaking commit messages!](git_commit.png)
+
+## Making changes
+
+Now, we do two things: we add a new file to the git, and we modify the content of an existing file. 
+
+What needs to be done to add a new file to the git? Correct, we need to add it:
+
+```
+git add git_commit.png
+```
+
+And what happens to the changes made to `tutorial.md`? Let's check using `git status`:
+
+```
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+    new file:   git_commit.png
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+    modified:   tutorial.md
+```
+
+As you can see, git is about to include the new file and it noticed your changes to `tutorial.md`. **But**, these changes are not yet "added to commit"! So, if you do a `git commit` just now, only the new file is added! To also include the changes made to `tutorial.md` to the revision, you need to add the file again using `git add tutorial.md`. Alternatively, and maybe a little handier, you can use
+
+```
+git commit -a
+```
+
+This automatically adds all changes to the commit and then commits the revision all in one step. Be aware, though, that this doesn't add new files. New files have to be explicitly added as shown above.
+
 
 
