@@ -108,3 +108,101 @@ In case you want to undo all the most recent changes, take these steps:
         Be careful with this command, though. You'll lose any changes in the working directory. 
 
 In case you have local changes that are staged already, [have a look at the documentation for undoing those](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes)^[[https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes)].
+
+
+## Working with the history
+
+You can go back in your commit history by "checking out" specific revisions. Use 
+
+```
+git log
+```
+
+to view a list of the commits of your repository:
+
+```
+commit b1752014f34cec5499c00ace43932cfb93256880 (HEAD -> master, tag: 300-working_with_git_history)
+Author: Mirco Schoenfeld <mirco.schoenfeld@uni-bayreuth.de>
+Date:   Wed Nov 24 12:11:29 2021 +0100
+
+    Added a section about working with the git history
+
+
+commit 62d0f432cc77e529ebaca90c88af574e0b69da48 (tag: 200-advanced_features)
+Author: Mirco Schoenfeld <mirco.schoenfeld@uni-bayreuth.de>
+Date:   Wed Nov 24 12:03:07 2021 +0100
+
+    Added documentation of advanced features. Most importantly, this includes reverting last changes
+
+
+commit 07ebd3386ea1831b8b57b5306ba87cef2fed6223 (tag: 100-first_changes)
+Author: Mirco Schoenfeld <mirco.schoenfeld@uni-bayreuth.de>
+Date:   Wed Nov 24 06:44:32 2021 +0100
+
+    Added a chapter "Making changes"
+
+commit 67321e834d987743229f04eae49564544c8c2eab (tag: 000-get_started)
+Author: Mirco Schoenfeld <mirco.schoenfeld@uni-bayreuth.de>
+Date:   Wed Nov 24 05:44:32 2021 +0100
+
+    Initial commit
+
+```
+
+At this point, it is clear why you should use meaningful commit messages - how else should you know what those revisions introduced?
+
+You can use 
+
+```
+git show 07ebd338
+```
+
+to view the details and the related commit message of a specific revision. The identifier `07ebd338` are the first few characters of the commit-id presented by the `git log` command.
+
+If you would like to go back in time to a specific revision, simply use
+
+```
+git checkout 67321e83
+```
+
+which takes you back to the initial commit. If you now apply other changes and commit them, all commits after commit `67321e83` are discarded. This is ok to do if you're working alone on the project. In collaborative scenarios, this will clash with what your collaborators have locally.
+
+In case you screwed up really hard, git might still be able to save you. There are ways of "Redoing the undo" - [have a look here at the gitlab doc](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#redoing-the-undo)^[[https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#redoing-the-undo](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#redoing-the-undo)].
+
+## Viewing differences between revisions
+
+From the `git log` output, you can compare revisions and see what changed:
+
+```
+git diff 67321e83
+```
+
+This compares the current revision with revision `67321e83`. The output shows that one file was added and some changes were made to the file `tutorial.md`:
+
+```
+diff --git a/git_commit.png b/git_commit.png
+new file mode 100644
+index 0000000..9eefc8d
+Binary files /dev/null and b/git_commit.png differ
+diff --git a/tutorial.md b/tutorial.md
+index 12c32aa..b2858a8 100644
+--- a/tutorial.md
++++ b/tutorial.md
+@@ -42,3 +42,8 @@ git commit
+ 
+ This will prompt you for a commit message. Make sure to describe your commits in a meaningful way (relevant: https://xkcd.com/1296/ ).
+ 
++
++## Making changes
++
++
++ ....
+```
+
+To compare specific revisions, simply use
+
+```
+git diff 62d0f432 07ebd338
+```
+
+which compares the last two commits with each other. It will show that the most recent change involved the deletion of `git_commit.png`. Using the above-mentioned commands, it would be possible to restore that file again. [In case you want to read further have a look here the gitlab doc](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git)^[[https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git)].
