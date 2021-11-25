@@ -78,3 +78,33 @@ This automatically adds all changes to the commit and then commits the revision 
 
 
 
+
+
+## Reverting last changes
+
+In case you want to undo all the most recent changes, take these steps:
+
+1. Make sure that your changes are not staged for commit by running `git status`. Your changes must appear under the section "`Changes not staged for commit`"
+
+2. You have three options:
+    1. To overwrite local changes:
+        
+        ```
+        git checkout -- <file>
+        ```
+        
+    2. To save local changes so you can re-use them later
+        
+        ```
+        git stash
+        ```
+        
+    3. To discard local changes to all files, permanently
+        
+        ```
+        git reset --hard
+        ```
+        
+        Be careful with this command, though. You'll lose any changes in the working directory. 
+
+In case you have local changes that are staged already, [have a look at the documentation for undoing those](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes)^[[https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes](https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/#undo-staged-local-changes)].
