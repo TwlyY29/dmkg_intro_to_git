@@ -78,3 +78,37 @@ This automatically adds all changes to the commit and then commits the revision 
 
 
 
+
+
+## Branches in git
+
+In a single git repository, you can have multiple branches. A branch is a parallel line of development for which you create a copy of the current state of the working directory. Use 
+
+```
+git branch braching
+```
+to create a branch called `branching`. If you now run
+
+```
+git branch
+```
+it says that your repository consists of two branches at this point:
+
+```
+  branching
+* master
+```
+
+The `master` branch is the trunk of the repository. It is created automatically together with the empty repository. The asteriks marks the currently active branch. To switch to the `branching` branch, use
+
+```
+git switch branching
+```
+
+You can now make changes to your file `tutorial.md` and commit them using
+
+```
+git commit -a
+```
+
+When you switch back to the master branch (`git switch master`) you will notice that your changes are no longer visible.
